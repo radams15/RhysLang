@@ -1,0 +1,53 @@
+from rply.token import BaseBox
+
+
+class Number(BaseBox):
+    def __init__(self, value):
+        self.value = value
+
+    def eval(self):
+        return int(self.value)
+
+class String(BaseBox):
+    def __init__(self, value):
+        self.value = value
+
+    def eval(self):
+        return self.value[1:-1]
+
+
+class Operation(BaseBox):
+    def __init__(self, left, right):
+        self.left = left
+        self.right = right
+
+class BinaryOp(Operation):
+    pass
+
+
+class Sum(BinaryOp):
+    def eval(self):
+        return self.left.eval() + self.right.eval()
+
+
+class Sub(BinaryOp):
+    def eval(self):
+        return self.left.eval() - self.right.eval()
+
+class Mul(BinaryOp):
+    def eval(self):
+        return self.left.eval() * self.right.eval()
+
+
+class Div(BinaryOp):
+    def eval(self):
+        return self.left.eval() / self.right.eval()
+
+
+class Puts(BaseBox):
+    def __init__(self, value):
+        self.value = value
+
+    def eval(self):
+        print(self.value.eval())
+
