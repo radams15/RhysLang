@@ -1,35 +1,5 @@
 from rply.token import BaseBox
 
-
-class Program(BaseBox):
-
-    def __init__(self, statement):
-        self.statements = []
-        self.statements.append(statement)
-        print(self.statements)
-
-    def add_statement(self, statement):
-        self.statements.insert(0, statement)
-
-    def eval(self, env):
-        # print "count: %s" % len(self.statements)
-        result = None
-        for statement in self.statements:
-            result = statement.eval(env)
-            # print result.to_string()
-        return result
-
-    def rep(self):
-        result = 'Program('
-        for statement in self.statements:
-            result += '\n\t' + statement.rep()
-        result += '\n)'
-        return result
-
-    def get_statements(self):
-        return self.statements
-
-
 class Number(BaseBox):
     def __init__(self, value):
         self.value = value
@@ -44,13 +14,32 @@ class Eval(BaseBox):
     def eval(self):
         return self.value
 
+class Expression(BaseBox):
+    def __init__(self, left, right, operator):
+        self.left = left
+        self.right = right
+        self.operator = operator
+
+        print(left, right, operator)
+
+    def eval(self):
+        if self.operator.gettokentype() == "/":
+            return Div(self.left, self.right)
+        elif self.operator.gettokentype() == "*":
+            return Mul(self.left, self.right)
+        elif self.operator.gettokentype() == "+":
+            return Sum(self.left, self.right)
+        elif self.operator.gettokentype() == "-":
+            return Sub(self.left, self.right)
+
 
 class String(BaseBox):
     def __init__(self, value):
         self.value = value
 
     def eval(self):
-        return self.value.replace("\"", "")#[1:-1]
+        val = self.value[1:-1]
+        return val
 
 
 class Operation(BaseBox):

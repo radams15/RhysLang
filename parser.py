@@ -29,31 +29,19 @@ class Parser:
         )
 
     def parse(self):
-        @self.pg.production('puts : PUTS ( expression ) ;')
+        @self.pg.production('puts : PUTS  expression ;')
         def puts(p):
-            return Puts(p[2])
+            print(p)
+            return Puts(p[1])
 
-
-        @self.pg.production('program : statement_full')
-        def program_statement(p):
-            return Program(p[0])
-
-        @self.pg.production('statement_full : statement ;')
-        def statement_full(p):
-            return p[0]
-
-        @self.pg.production('statement : expression')
-        def statement_expr(p):
+        @self.pg.production('program : expression')
+        def program(p):
             return p[0]
 
 
         @self.pg.production('eval : EVAL ( expression ) ;')
         def evaluate(p):
             return Eval(p[2])
-
-        @self.pg.production('function : FUNCTION ')
-        def function(p):
-            return Puts(p[2])
 
         @self.pg.production('expression : expression + expression')
         @self.pg.production('expression : expression - expression')
@@ -64,14 +52,7 @@ class Parser:
             right = p[2]
             operator = p[1]
 
-            if operator.gettokentype() == "DIV":
-                return Div(left, right)
-            elif operator.gettokentype() == "MUL":
-                return Mul(left, right)
-            elif operator.gettokentype() == "SUM":
-                return Sum(left, right)
-            elif operator.gettokentype() == "SUB":
-                return Sub(left, right)
+            return Eval(Expression(left, right, operator).eval())
 
         @self.pg.production('expression : NUMBER')
         def number(p):
