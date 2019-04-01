@@ -37,10 +37,6 @@ class Parser:
         def evaluate(p):
             return Puts(p[2])
 
-        @self.pg.production('main : statement')
-        def main_program(p):
-            return p[0]
-
         @self.pg.production('function : FUNCTION ')
         def function(p):
             return Puts(p[2])
