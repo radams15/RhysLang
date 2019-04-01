@@ -33,9 +33,23 @@ class Parser:
         def puts(p):
             return Puts(p[2])
 
+
+        @self.pg.production('program : statement_full')
+        def program_statement(p):
+            return Program(p[0])
+
+        @self.pg.production('statement_full : statement ;')
+        def statement_full(p):
+            return p[0]
+
+        @self.pg.production('statement : expression')
+        def statement_expr(p):
+            return p[0]
+
+
         @self.pg.production('eval : EVAL ( expression ) ;')
         def evaluate(p):
-            return Puts(p[2])
+            return Eval(p[2])
 
         @self.pg.production('function : FUNCTION ')
         def function(p):

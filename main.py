@@ -1,11 +1,14 @@
 from parser import Parser
 from compiler import Compiler
+from time import sleep
 
 compiler = Compiler()
 
 pg = Parser()
 pg.parse()
 parser = pg.get_parser()
+
+sleep(0.1)
 
 file_name = "test.chev"
 
